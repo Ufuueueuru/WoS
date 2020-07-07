@@ -1,7 +1,7 @@
 let logoPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABUElEQVRYR+VXQRLDIAjEe/7/0tztQKOjVGDVeGoOyUyLCsuyYCKinImIbn79Puki4v8TG574ZqIsmxsO0HXwcA4o3xJYfWYj1sjNru8cQBdb6SpRoPsw8tUBaJGTpmUkOAXQ4ZqoFjeKkyB3vggAxl2Ejn2xQ4MSByDjBn7X/jQCkbPnEYjS9dcIoERtZR3WASi3k/BLb6lSvJtbtEpUQ+t7gXYCbVDaLgqmdYK7YaTtovGX3bK7Jj5zeHHEbMVl57KphYi2m5kb6jwwsWiF7dYwIxVxZNJBJ6hpBBbZvo3A0syI6AKCQFQlVoNCxAvjgAV7lI5XEEAP4SpSI/wrCCCbVB1pRAgu1ZADAIxDJ4F1MhVHOrCLQDRBJQ8BFMZzCEQEdEZ17dSwlJkzOxxwLyNR43qqBubA+O78/Dpowa5ytgQNEXCu7mVOGF7dwSr4ADVg8gBQq6EzAAAAAElFTkSuQmCC";
 let logoLength = 240;
 
-let readyPlay;
+let readyPlay = 0;
 
 let swarmSpawner;
 let swarmSpawner2;
@@ -219,8 +219,16 @@ function draw() {
 		if(requiredFiles > 0)
 			text((floor((loadedFiles+file2)/requiredFiles*100)) + "%", 10, 100);
 		
-		if(loadedFiles+file2 >= requiredFiles)
-			menu = "intro";
+		if(loadedFiles+file2 >= requiredFiles) {
+			if(mouseIsPressed && mouseX > 220 && mouseX < 380 && mouseY > 200 && mouseY < 260)
+				menu = "intro";
+			fill(178);
+			rect(220, 200, 160, 60, 4);
+			fill(0 + (mouseX > 220 && mouseX < 380 && mouseY > 200 && mouseY < 260)?100:0);
+			textAlign(CENTER);
+			text("Start", 295, 245);
+			textAlign(LEFT);
+		}
 		
 		if(logoPath === "") {
 			file2 = 1;
@@ -242,6 +250,11 @@ function draw() {
 		//image(gear, 100, 100);
 		
 		introWait ++;
+		
+		if(introWait > logoLength) {
+			
+			menu = "menu";
+		}
 	}
 	if(menu === "settings") {
 		if(dist(mouseX, mouseY, 0, 250)<100 && mouseIsPressed)
@@ -287,7 +300,7 @@ function draw() {
 		for(let i = 0;i < gameSetting.volume;i ++) {
 			rect(500 + 11*i, 150 - 5*i, 10, 10 + 5*i);
 		}
-		if(mouseIsPressed && mouseX > 500 && mouseX < 555 && mouseY > 125 && mouseY < 160) {
+		if(mouseIsPressed && mouseX > 500 && mouseX < 555 && mouseY > 125 && mouseY < 160 && gameSetting.volume !== ceil((mouseX - 500)/11)) {
 			gameSetting.volume = ceil((mouseX - 500)/11);
 			mainSong.setVolume((gameSetting.volume-1)/4);
 		}
@@ -830,7 +843,6 @@ function done() {
 
 function file1Percent(p) {
 	loadedFiles = p;
-	//alert(loadedFiles);
 }
 
 function error() {
