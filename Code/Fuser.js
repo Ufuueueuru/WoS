@@ -70,9 +70,11 @@ class Fuser extends Enemy {
 		ent.x -= cos(angle) * error/50 * min(dt, 7);//move other entity
 		ent.y -= sin(angle) * error/50 * min(dt, 7);
 		//ent.collideEntity = this.collideEntityProto;
-		if(this instanceof Regener)
-			this.HP -= this.maxHP / 40;
-		this.HP -= this.maxHP / 500;
+		if(this.HP / this.maxHP > this.maxHP / 4) {
+			if(this instanceof Regener)
+				this.HP -= this.maxHP / 40;
+			this.HP -= this.maxHP / 500;
+		}
 		this.run(player);
 		return true;
 	}
