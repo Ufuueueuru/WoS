@@ -342,7 +342,7 @@ function draw() {
 		}
 		
 		fill(50, 50, 80);
-		textSize(20 + ((mouseX>80 && mouseX < 280 && mouseY > 135 && mouseY < 160)?5:0));
+		textSize(20 + ((mouseX>80 && mouseX < 268 && mouseY > 135 && mouseY < 160)?5:0));
 		text("Screen haze: " + gameSetting.screenHaze, 80, 150);
 		textSize(18);
 		text("(recommended off in case of epilepsy)", 30, 180);
