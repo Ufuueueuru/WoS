@@ -32,49 +32,56 @@ let modes = {
 		name: "Normal",
 		id: "normal",
 		description: "The original way to play the game!",
-		requirement: "y r u hacking this is a small game???!?!?!?"
+		requirement: "y r u hacking this is a small game???!?!?!?",
+		highscore: 0
 	},
 	easy: {
 		unlocked: false,
 		name: "Easy",
 		id: "easy",
 		description: "You regenerate health more, so it's much easier to survive!",
-		requirement: "Start 3 rounds on normal mode."
+		requirement: "Start 3 rounds on normal mode.",
+		highscore: 0
 	},
 	hard: {
 		unlocked: false,
 		name: "Hard",
 		id: "hard",
 		description: "Enemies spawn very fast - a much harder experience!",
-		requirement: "Reach 5k points on normal mode."
+		requirement: "Reach 5k points on normal mode.",
+		highscore: 0
 	},
 	impossible: {
 		unlocked: false,
 		name: "Impossible",
 		id: "impossible",
 		description: "No regen gained from leveling up = no way to survive.",
-		requirement: "Reach Healers on hard mode."
+		requirement: "Reach Healers on hard mode.",
+		highscore: 0
 	},
 	drain: {
 		unlocked: false,
 		name: "Deflation",
 		id: "drain",
 		description: "Drainers cannot die! Expect a much shorter game.",
-		requirement: "Reach drainers on any mode."
+		requirement: "Reach drainers on any mode.",
+		highscore: 0
 	},
 	pacifist: {
 		unlocked: false,
 		name: "Pacifist",
 		id: "pacifist",
 		description: "Defeating enemies hurts you, but enemies have poison effect.",
-		requirement: "Die with no points after a while."
+		requirement: "Die with no points after a while.",
+		highscore: 0
 	},
 	sandbox: {
 		unlocked: false,
 		name: "Sandbox",
 		id: "sandbox",
 		description: "Melt hoards of enemies with no threat - start with lots of EXP.",
-		requirement: "Reach Healers on normal mode."
+		requirement: "Reach Healers on normal mode.",
+		highscore: 0
 	}
 };
 
@@ -94,6 +101,7 @@ let selectedMode = modes.normal;
 
 let loadedFiles = 0;
 let file2 = 0;
+let file3 = 0;
 let requiredFiles = 0;//number of files needed
 
 let score = 0;
@@ -117,7 +125,10 @@ let menuVids = [];
 let creditsBackground = [];
 
 let mainSong;
+let hurt;
 let logo;
+
+let sfxOn = true;
 
 let g;
 
@@ -158,6 +169,7 @@ function setup() {
 	
 	//menuVids[0] = createVideo("Assets/menu1.webm", loaded);//requiredFiles ++;
 	mainSong = loadSound("Assets/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
+	hurt = loadSound("Assets/Hit.wav", hurtDone, error, file2Percent);requiredFiles ++;
 	logo = loadImage(logoPath, loadedFile, error);requiredFiles ++;
 	
 	/*mainSong = {
@@ -201,6 +213,29 @@ let settingsButtonRadius = 60;
 let introWait = 0;
 
 function draw() {
+	if(menu === "game") {
+		if(mode === "normal" && score > modes.normal.highscore) {
+			modes.normal.highscore = score;
+		}
+		if(mode === "hard" && score > modes.gard.highscore) {
+			modes.hard.highscore = score;
+		}
+		if(mode === "impossible" && score > modes.impossible.highscore) {
+			modes.impossible.highscore = score;
+		}
+		if(mode === "drain" && score > modes.drain.highscore) {
+			modes.drain.highscore = score;
+		}
+		if(mode === "pacifist" && score > modes.pacifist.highscore) {
+			modes.pacifist.highscore = score;
+		}
+		if(mode === "easy" && score > modes.easy.highscore) {
+			modes.easy.highscore = score;
+		}
+		if(mode === "sandbox" && score > modes.sandbox.highscore) {
+			modes.sandbox.highscore = score;
+		}
+	}
 	
 	dt = deltaTime/15;
 	
@@ -217,9 +252,9 @@ function draw() {
 		textSize(50);
 		text("Loading" + "...".substring(0, floor(frameCount/10) % 4), 10, 50);
 		if(requiredFiles > 0)
-			text((floor((loadedFiles+file2)/requiredFiles*100)) + "%", 10, 100);
+			text((floor((loadedFiles+file2 + file3)/requiredFiles*100)) + "%", 10, 100);
 		
-		if(loadedFiles+file2 >= requiredFiles) {
+		if(loadedFiles+file2+file3 >= requiredFiles) {
 			if(mouseIsPressed && mouseX > 220 && mouseX < 380 && mouseY > 200 && mouseY < 260)
 				menu = "intro";
 			fill(178);
@@ -303,6 +338,7 @@ function draw() {
 		if(mouseIsPressed && mouseX > 500 && mouseX < 555 && mouseY > 125 && mouseY < 160 && gameSetting.volume !== ceil((mouseX - 500)/11)) {
 			gameSetting.volume = ceil((mouseX - 500)/11);
 			mainSong.setVolume((gameSetting.volume-1)/4);
+			hurt.setVolume((gameSetting.volume-1)/4);
 		}
 		
 		fill(50, 50, 80);
@@ -310,6 +346,12 @@ function draw() {
 		text("Screen haze: " + gameSetting.screenHaze, 80, 150);
 		textSize(18);
 		text("(recommended off in case of epilepsy)", 30, 180);
+		
+		textAlign(CENTER);
+		fill(0);
+		textSize(20 + ((mouseX > 265 && mouseX < 335 && mouseY > 120 && mouseY < 150)?5:0));
+		text("SFX: " + (sfxOn?"On":"Off"), 300, 140);
+		textAlign(LEFT);
 		
 		fill(128);
 		rect(250, 200, 100, 100, 10);
@@ -337,6 +379,7 @@ function draw() {
 		textAlign(CENTER);
 		text(selectedMode.description, 300, 400);
 		text(selectedMode.name, 300, 290);
+		text("High Score: " + floor(selectedMode.highscore), 300, 316);
 		text(selectedMode.unlocked?(mode===selectedMode.id?"Selected":"Select"):"Locked", 300, 345);
 		if(!selectedMode.unlocked)
 			text("To unlock: " + selectedMode.requirement, 300, 430);
@@ -437,7 +480,8 @@ function draw() {
 		textSize(20);
 		text("p5.js library", 300, 330);
 		text("audiotrimmer.com", 300, 370);
-		text("You, for playing this game!", 300, 410);
+		text("bfxr.net", 300, 410);
+		text("You, for playing this game!", 300, 450);
 		
 		textAlign(LEFT);
 		
@@ -771,6 +815,7 @@ function loadedFile() {
 }
 
 function mouseClicked() {
+	//hurt.play();
 	if(menu === "paused") {
 		if(dist(mouseX, mouseY, 200, 250) < 50)
 			menu = "game";
@@ -831,8 +876,11 @@ function mouseClicked() {
 		if(dist(mouseX, mouseY, 255, 340) + dist(mouseX, mouseY, 345, 340) < 100 && selectedMode.unlocked) {//select mode
 			mode = selectedMode.id;
 		}
-		if(mouseX>80 && mouseX < 280 && mouseY > 135 && mouseY < 160) {
+		if(mouseX>80 && mouseX < 268 && mouseY > 135 && mouseY < 160) {
 			gameSetting.screenHaze = !gameSetting.screenHaze;
+		}
+		if(mouseX > 268 && mouseX < 335 && mouseY > 120 && mouseY < 150) {
+			sfxOn = !sfxOn;
 		}
 	}
 }
@@ -841,8 +889,16 @@ function done() {
 	loadedFiles = 1;
 }
 
+function hurtDone() {
+	file3 = 1;
+}
+
 function file1Percent(p) {
 	loadedFiles = p;
+}
+
+function file2Percent(p) {
+	file3 = p;
 }
 
 function error() {
