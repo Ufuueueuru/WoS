@@ -1,6 +1,8 @@
 let logoPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABUElEQVRYR+VXQRLDIAjEe/7/0tztQKOjVGDVeGoOyUyLCsuyYCKinImIbn79Puki4v8TG574ZqIsmxsO0HXwcA4o3xJYfWYj1sjNru8cQBdb6SpRoPsw8tUBaJGTpmUkOAXQ4ZqoFjeKkyB3vggAxl2Ejn2xQ4MSByDjBn7X/jQCkbPnEYjS9dcIoERtZR3WASi3k/BLb6lSvJtbtEpUQ+t7gXYCbVDaLgqmdYK7YaTtovGX3bK7Jj5zeHHEbMVl57KphYi2m5kb6jwwsWiF7dYwIxVxZNJBJ6hpBBbZvo3A0syI6AKCQFQlVoNCxAvjgAV7lI5XEEAP4SpSI/wrCCCbVB1pRAgu1ZADAIxDJ4F1MhVHOrCLQDRBJQ8BFMZzCEQEdEZ17dSwlJkzOxxwLyNR43qqBubA+O78/Dpowa5ytgQNEXCu7mVOGF7dwSr4ADVg8gBQq6EzAAAAAElFTkSuQmCC";
 let logoLength = 240;
 
+let readyPlay;
+
 let swarmSpawner;
 let swarmSpawner2;
 let swarmSpawner3;
@@ -240,11 +242,6 @@ function draw() {
 		//image(gear, 100, 100);
 		
 		introWait ++;
-		
-		if(introWait > logoLength) {
-			mainSong.loop();
-			menu = "menu";
-		}
 	}
 	if(menu === "settings") {
 		if(dist(mouseX, mouseY, 0, 250)<100 && mouseIsPressed)
@@ -448,6 +445,11 @@ function draw() {
 		text("Back", 565, 255);
 	}
 	if(menu === "menu") {
+		if(readyPlay > -1) {
+			mainSong.loop();
+			readyPlay = -1;
+		}
+		
 		mainButtonRadius = mainButtonRadius + ((dist(mouseX, mouseY, 300, 250)<mainButtonRadius?110:80)-mainButtonRadius)/20;
 		creditsButtonRadius = creditsButtonRadius + ((dist(mouseX, mouseY, 150, 350)<creditsButtonRadius?90:60)-creditsButtonRadius)/20;
 		settingsButtonRadius = settingsButtonRadius + ((dist(mouseX, mouseY, 450, 350)<settingsButtonRadius?90:60)-settingsButtonRadius)/20;
