@@ -155,7 +155,7 @@ function setup() {
 	healSpawner = new Clock(4, 120, 190, 70);
 	
 	//menuVids[0] = createVideo("Assets/menu1.webm", loaded);//requiredFiles ++;
-	mainSong = loadSound("http://ufuueueuru.github.io/WoS/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
+	mainSong = loadSound("Assets/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
 	logo = loadImage(logoPath, loadedFile, error);requiredFiles ++;
 	
 	/*mainSong = {
@@ -832,5 +832,5 @@ function file1Percent(p) {
 }
 
 function error() {
-	alert("NOOOO");
+	
 }
