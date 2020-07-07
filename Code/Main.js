@@ -217,7 +217,7 @@ function draw() {
 		if(mode === "normal" && score > modes.normal.highscore) {
 			modes.normal.highscore = score;
 		}
-		if(mode === "hard" && score > modes.gard.highscore) {
+		if(mode === "hard" && score > modes.hard.highscore) {
 			modes.hard.highscore = score;
 		}
 		if(mode === "impossible" && score > modes.impossible.highscore) {
