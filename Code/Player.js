@@ -75,7 +75,7 @@ class Player extends Entity {
 	
 	run() {
 		//debug
-		if(keyIsDown(16))
+		if(keyIsDown(16) && cheated)
 			this.EXP += this.maxEXP/10;
 		
 		this.HP += this.regen/10 * this.regenPercent/100 * dt;
