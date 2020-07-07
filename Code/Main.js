@@ -290,7 +290,7 @@ function draw() {
 		for(let i = 0;i < gameSetting.volume;i ++) {
 			rect(500 + 11*i, 150 - 5*i, 10, 10 + 5*i);
 		}
-		if(mouseIsPressed && mouseX > 490 && mouseX < 555 && mouseY > 125 && mouseY < 160) {
+		if(mouseIsPressed && mouseX > 500 && mouseX < 555 && mouseY > 125 && mouseY < 160) {
 			gameSetting.volume = ceil((mouseX - 500)/11);
 			mainSong.setVolume((gameSetting.volume-1)/4);
 		}
