@@ -137,6 +137,7 @@ function setup() {
 	canvas.parent("game");
 	frameRate(60);
 	noStroke();
+	soundFormats("mp3", "wav", "ogg");
 	
 	gear = createGraphics(100, 100);
 	
@@ -169,7 +170,7 @@ function setup() {
 	
 	//menuVids[0] = createVideo("Assets/menu1.webm", loaded);//requiredFiles ++;
 	mainSong = loadSound("Assets/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
-	hurt = loadSound("Assets/Hit.wav", hurtDone, error, file2Percent);requiredFiles ++;
+	hurt = loadSound("Assets/Hit.mp3", hurtDone, error, file2Percent);requiredFiles ++;
 	logo = loadImage(logoPath, loadedFile, error);requiredFiles ++;
 	
 	/*mainSong = {
@@ -581,7 +582,9 @@ function draw() {
 		text("p5.js library", 300, 330);
 		text("audiotrimmer.com", 300, 370);
 		text("bfxr.net", 300, 410);
-		text("You, for playing this game!", 300, 450);
+		text("convertio.co", 300, 450);
+		//text("", 300, 490);
+		text("You, for playing this game!", 300, 490);
 		
 		textAlign(LEFT);
 		
