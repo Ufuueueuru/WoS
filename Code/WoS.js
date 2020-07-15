@@ -134,7 +134,7 @@ let g;
 
 function setup() {
 	canvas = createCanvas(600, 500);
-	//canvas.parent("game");
+	canvas.parent("game");
 	frameRate(60);
 	noStroke();
 	
@@ -168,8 +168,8 @@ function setup() {
 	healSpawner = new Clock(4, 120, 190, 70);
 	
 	//menuVids[0] = createVideo("Assets/menu1.webm", loaded);//requiredFiles ++;
-	mainSong = loadSound("/Assets/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
-	hurt = loadSound("/Assets/Hit.wav", hurtDone, error, file2Percent);requiredFiles ++;
+	mainSong = loadSound("Assets/War%20of%20Spheres.mp3", done, error, file1Percent);requiredFiles ++;
+	hurt = loadSound("Assets/Hit.wav", hurtDone, error, file2Percent);requiredFiles ++;
 	logo = loadImage(logoPath, loadedFile, error);requiredFiles ++;
 	
 	/*mainSong = {
